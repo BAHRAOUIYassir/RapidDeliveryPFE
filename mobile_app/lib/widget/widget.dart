@@ -1,8 +1,11 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 
-import '../widget/Text_widget.dart';
+import '../screen/login_screen.dart';
+import 'text_widget.dart';
 
 //hada fichier nb9aw nhato fih les buuton wla xi haja xi wiget kt3wd n personalizha hna
 Widget Apponbroadpage(
@@ -47,7 +50,12 @@ Widget Apponbroadpage(
         height: 10,
       ),
       GestureDetector(
-        // onTap: () => loginpage(),
+        onTap: () {
+          Navigator.push(
+            context as BuildContext,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+          );
+        },
         // fhadi hya btton skip li radi dik nichan l login
         child: text24(
           name: 'Skip',
@@ -64,7 +72,7 @@ Widget _button(int index, String titre, PageController controller) {
       if (index < 3) {
         controller.animateToPage(
           index,
-          duration: Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 200),
           curve: Curves.linear,
         );
       } else {}
@@ -77,7 +85,7 @@ Widget _button(int index, String titre, PageController controller) {
       width: 363,
       margin: const EdgeInsets.only(top: 100),
       decoration: BoxDecoration(
-        color: Color(0xFFFF9800),
+        color: const Color(0xFFFF9800),
         borderRadius: BorderRadius.circular(20.0),
         boxShadow: const [
           BoxShadow(

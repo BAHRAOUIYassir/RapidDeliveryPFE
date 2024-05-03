@@ -1,7 +1,8 @@
-// ignore: file_names
-import 'package:flutter/material.dart';
+
 
 //hada fih le wiget dayl le text 
+import 'package:flutter/material.dart';
+
 Widget text24({String name = '', Color color = Colors.black}) {
   return Text(
     name,

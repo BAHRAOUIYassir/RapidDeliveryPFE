@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 
 import '../widget/widget.dart';
 
-class welcome extends StatefulWidget {
-  const welcome({super.key});
+// remarque ::: khas had screen ttla3 mara we7da meli awel mara ydir sign up
+
+class WelcomeScreen extends StatefulWidget {
+  const WelcomeScreen({super.key});
 
   @override
-  State<welcome> createState() => _welcomeState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _welcomeState extends State<welcome> {
+class _WelcomeScreenState extends State<WelcomeScreen> {
   final PageController _controller = PageController();
 
   int dotindex = 0;
