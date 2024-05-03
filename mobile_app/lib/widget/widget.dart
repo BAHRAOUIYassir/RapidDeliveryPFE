@@ -1,15 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 
-import '../screen/login_screen.dart';
 import 'text_widget.dart';
 
 //hada fichier nb9aw nhato fih les buuton wla xi haja xi wiget kt3wd n personalizha hna
 Widget Apponbroadpage(
-  PageController controller, {
+  PageController controller,
+  BuildContext ctx, {
   String imagepath = "",
   String titre = "",
   String soustitre = "",
@@ -24,8 +22,6 @@ Widget Apponbroadpage(
         child: Image.asset(
           imagepath,
           fit: BoxFit.cover,
-          // width: 500,
-          // height: 500,
         ),
       ),
       const SizedBox(
@@ -42,31 +38,33 @@ Widget Apponbroadpage(
           child: text18(name: soustitre, color: Colors.black54),
         ),
       ),
-      const SizedBox(
-        height: 40,
-      ),
-      _button(index, btnTitre, controller),
-      const SizedBox(
-        height: 10,
-      ),
-      GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context as BuildContext,
-            MaterialPageRoute(builder: (context) => const LoginPage()),
-          );
-        },
-        // fhadi hya btton skip li radi dik nichan l login
-        child: text24(
-          name: 'Skip',
-          color: Colors.black54,
+      SizedBox(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _button(index, btnTitre, controller, ctx),
+            const SizedBox(
+              height: 10,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(ctx).pushNamed('loginpage');
+              },
+              // fhadi hya btton skip li radi dik nichan l login
+              child: text24(
+                name: 'Skip',
+                color: Colors.black54,
+              ),
+            )
+          ],
         ),
       )
     ],
   );
 }
 
-Widget _button(int index, String titre, PageController controller) {
+Widget _button(
+    int index, String titre, PageController controller, BuildContext ctx) {
   return GestureDetector(
     onTap: () {
       if (index < 3) {
@@ -75,7 +73,9 @@ Widget _button(int index, String titre, PageController controller) {
           duration: const Duration(milliseconds: 200),
           curve: Curves.linear,
         );
-      } else {}
+      } else {
+        Navigator.of(ctx).pushNamed('loginpage');
+      }
 
       //
       //hna fhad else radi tkon direction l page dyal login
@@ -110,31 +110,35 @@ Widget _button(int index, String titre, PageController controller) {
 }
 
 //hadi button zid ila htjitha
-Widget button({String name = "", double sizetext = 24}) {
-  return Container(
-    height: 60,
-    width: 363,
-    margin: const EdgeInsets.only(top: 100),
-    decoration: BoxDecoration(
-      color: const Color(0xFFFF9800),
-      borderRadius: BorderRadius.circular(20.0),
-      boxShadow: const [
-        BoxShadow(
-          spreadRadius: 1,
-          offset: Offset(2, 2),
-          color: Colors.black12,
-          blurRadius: 2,
+Widget button({String name = "", double sizetext = 24,Function()? func}) {
+  return GestureDetector(
+    onTap: () => func,
+    child: Container(
+      height: 60,
+      width: 363,
+      decoration: BoxDecoration(
+        color: const Color(0xFFFF9800),
+        borderRadius: BorderRadius.circular(20.0),
+        boxShadow: const [
+          BoxShadow(
+            spreadRadius: 1,
+            offset: Offset(1, 3),
+            color: Colors.black12,
+            blurRadius: 5,
+          ),
+        ],
+      ),
+      child: Center(
+        child: Text(
+          name,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: sizetext,
+              fontWeight: FontWeight.w500),
         ),
-      ],
-    ),
-    child: Center(
-      child: Text(
-        name,
-        style: TextStyle(
-            color: Colors.white,
-            fontSize: sizetext,
-            fontWeight: FontWeight.w500), // Adjust text style as needed
       ),
     ),
   );
 }
+
+
