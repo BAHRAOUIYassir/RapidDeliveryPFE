@@ -3,7 +3,10 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:mobile_app/screen/select_spaces_screen.dart';
 import 'package:mobile_app/screen/welcome_screen.dart';
+
+import '../screen/Espace_de_livreur/Mode_pass.dart';
 
 
 class SplashScreen extends StatelessWidget {
@@ -41,7 +44,7 @@ class SplashScreen extends StatelessWidget {
         ],
       ),
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
-      nextScreen: const WelcomeScreen(),
+      nextScreen: const SelectSpace(),
       splashIconSize: 280,
     );
   }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../widget/Text_widget.dart';
-import '../widget/widget.dart';
+import '../../widget/Text_widget.dart';
+import '../../widget/widget.dart';
 
 
 class Recuperation extends StatelessWidget {

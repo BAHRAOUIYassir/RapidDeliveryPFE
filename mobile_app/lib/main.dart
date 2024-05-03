@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/screen/login_screen.dart';
+import 'package:mobile_app/screen/select_spaces_screen.dart';
 
 import 'animation/animation_intro_logo.dart';
 
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white),
       //hada theme data kdar fiha xi haja li atkon f ga3 les page bhal back ground bhla font
       routes: {
-        'loginpage': (context) => const LoginPage(),
+        'loginpage': (context) => const SelectSpace(),
       },
       //salim: hada route knst3mloh bax n puche les page whda ri bsmiya smtiha puchNamed
     );

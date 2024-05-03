@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../widget/Text_widget.dart';
-import '../widget/input_widget.dart';
-import '../widget/widget.dart';
+import '../../widget/Text_widget.dart';
+import '../../widget/input_widget.dart';
+import '../../widget/widget.dart';
 
-class modepass extends StatelessWidget {
-  const modepass({super.key});
+class ModePass extends StatelessWidget {
+  const ModePass({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class modepass extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    inputfield(hint: "example@gmail.com", label: "EMAIL"),
+                    const InputField(hint: "example@gmail.com", label: "EMAIL" , obs: true,),
                     const SizedBox(
                       height: 30,
                     ),
@@ -94,7 +94,7 @@ Widget casse({String n = ''}) {
       child: Text(
         n,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
       ),
     ),
   );
