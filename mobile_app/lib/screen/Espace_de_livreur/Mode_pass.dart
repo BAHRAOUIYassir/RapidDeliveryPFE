@@ -12,14 +12,15 @@ class ModePass extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
+          SizedBox(
             height: MediaQuery.sizeOf(context).height,
+            width: MediaQuery.sizeOf(context).width,
           ),
           Stack(
             alignment: Alignment.center,
             children: [
               Container(
-                width: 393,
+                width: MediaQuery.sizeOf(context).width,
                 color: Colors.black38, //hada bax image ktwli kahla xwiya
                 child: Image.asset(
                   'image/livreur_men.png',
@@ -66,7 +67,11 @@ class ModePass extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    const InputField(hint: "example@gmail.com", label: "EMAIL" , obs: true,),
+                    const InputField(
+                      hint: "example@gmail.com",
+                      label: "EMAIL",
+                      obs: true,
+                    ),
                     const SizedBox(
                       height: 30,
                     ),

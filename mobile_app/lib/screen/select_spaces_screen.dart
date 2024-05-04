@@ -14,7 +14,7 @@ class SelectSpace extends StatelessWidget {
     //*********************Implement Button logic here******************
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
   //Yassir: button dyal Suivie ma commande
