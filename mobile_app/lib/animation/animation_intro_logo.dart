@@ -3,7 +3,8 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mobile_app/screen/Espace_de_livreur/Verification.dart';
+import 'package:mobile_app/screen/Espace_de_livreur/forget.dart';
+import 'package:mobile_app/screen/Espace_de_livreur/forget_password.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen(this.appName, this.appNameColor, {super.key});
@@ -40,7 +41,7 @@ class SplashScreen extends StatelessWidget {
         ],
       ),
       backgroundColor: const Color.fromRGBO(255, 255, 255, 1.0),
-      nextScreen: const Verification(),
+      nextScreen: const Forget(),
       splashIconSize: 280,
     );
   }

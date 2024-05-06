@@ -4,8 +4,8 @@ import '../../widget/Text_widget.dart';
 import '../../widget/widget.dart';
 
 
-class Recuperation extends StatelessWidget {
-  const Recuperation({super.key});
+class Validation extends StatelessWidget {
+  const Validation({super.key});
 
   @override
   Widget build(BuildContext context) {
