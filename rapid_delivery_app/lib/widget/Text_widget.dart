@@ -13,10 +13,11 @@ Widget text24({String name = '', Color color = Colors.black}) {
 Widget text18(
     {String name = '',
     Color color = Colors.black,
-    FontWeight fontWeight = FontWeight.normal}) {
+    FontWeight fontWeight = FontWeight.normal,
+    TextAlign text = TextAlign.start}) {
   return Text(
     name,
-    textAlign: TextAlign.center,
+    textAlign: text,
     style: TextStyle(
       color: color,
       fontSize: 18,

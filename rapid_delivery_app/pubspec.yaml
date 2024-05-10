@@ -19,6 +19,8 @@ dependencies:
   dots_indicator: ^3.0.0
   flutter_sticky_widgets: ^0.0.3
   email_validator: ^2.0.1
+  timelines: ^0.1.0
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   flutter_test:

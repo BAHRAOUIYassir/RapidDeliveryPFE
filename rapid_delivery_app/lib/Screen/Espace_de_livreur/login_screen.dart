@@ -57,15 +57,16 @@ class SignInScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              toolbarHeight: 20,
-              elevation: 0,
-              // yassir : dir nafs color f les screen lakhrin 
-              backgroundColor: Color.fromARGB(255, 46, 46,
+              toolbarHeight: 40,
+              elevation: 20,
+              foregroundColor: Colors.white,
+              // yassir : dir nafs color f les screen lakhrin
+              backgroundColor: const Color.fromARGB(255, 46, 46,
                   46), //Yassir:bash tweli backgroud noire chwiya b7al li f desgin
               expandedHeight: 270.0,
               pinned: true,
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(0),
+                preferredSize: const Size.fromHeight(20),
                 child: Container(
                   height: 20,
                   decoration: const BoxDecoration(
@@ -87,24 +88,6 @@ class SignInScreen extends StatelessWidget {
                       child: Image.asset(
                         'image/livreur_men.png',
                         fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      left: 5,
-                      // ignore: sized_box_for_whitespace
-                      child: Container(
-                        width: 50, // Set the width of the button
-                        height: 50, // Set the height of the button
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white, // Change the color of the icon
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
                       ),
                     ),
                     Positioned(

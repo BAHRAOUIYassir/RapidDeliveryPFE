@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 final ButtonStyle buttonPrimary = ElevatedButton.styleFrom(
-    minimumSize: const Size(400, 60),
-    backgroundColor: const Color.fromARGB(255, 255, 153, 0),
-    shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(50))
-          ) 
-        );
+  minimumSize: const Size(400, 60),
+  backgroundColor: const Color.fromARGB(255, 255, 153, 0),
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(50)),
+  ),
+  elevation: 2
+);
 
 class PrimaryButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -34,7 +35,6 @@ class PrimaryButton extends StatelessWidget {
           textbutton,
           style: style,
         ),
-        
       ),
     );
   }

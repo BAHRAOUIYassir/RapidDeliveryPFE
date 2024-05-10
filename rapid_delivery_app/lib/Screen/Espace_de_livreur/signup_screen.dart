@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:rapid_delivery_app/widget/Text_widget.dart';
 import 'package:rapid_delivery_app/widget/DropDown_Date_inputs/city_dropdown_menu_widget.dart';
-import 'package:rapid_delivery_app/widget/primary_button.dart';
 import 'package:rapid_delivery_app/widget/DropDown_Date_inputs/styled_date_field_widget.dart';
 import 'package:rapid_delivery_app/widget/DropDown_Date_inputs/vehicle_type_dropdown_menu.dart';
+import 'package:rapid_delivery_app/widget/Text_widget.dart';
+import 'package:rapid_delivery_app/widget/primary_button.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -46,14 +46,15 @@ class LoginScreen extends StatelessWidget {
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
-              toolbarHeight: 20,
-              elevation: 0,
+              toolbarHeight: 40,
+              elevation: 20,
+              foregroundColor: Colors.white,
               backgroundColor: const Color.fromARGB(255, 88, 88,
                   88), //Yassir:bash tweli backgroud noire chwiya b7al li f desgin
               expandedHeight: 270.0,
               pinned: true,
               bottom: PreferredSize(
-                preferredSize: const Size.fromHeight(0),
+                preferredSize: const Size.fromHeight(20),
                 child: Container(
                   height: 20,
                   decoration: const BoxDecoration(
@@ -75,25 +76,6 @@ class LoginScreen extends StatelessWidget {
                       child: Image.asset(
                         'image/livreur_men.png',
                         fit: BoxFit.cover,
-                      ),
-                    ),
-                    Positioned(
-                      top: 10,
-                      left: 5,
-                      // ignore: sized_box_for_whitespace
-                      child: Container(
-                        width: 50, // Set the width of the button
-                        height: 50, // Set the height of the button
-                        child: IconButton(
-                          // yassir : hadi dertha ana li bl byaad
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
                       ),
                     ),
                     Positioned(

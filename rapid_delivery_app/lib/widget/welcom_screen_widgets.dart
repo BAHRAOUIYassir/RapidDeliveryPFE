@@ -5,15 +5,13 @@ import 'package:flutter/material.dart';
 import 'text_widget.dart';
 
 //hada fichier nb9aw nhato fih les buuton wla xi haja xi wiget kt3wd n personalizha hna
-Widget Apponbroadpage(
-  PageController controller,
-  BuildContext ctx, {
-  String imagepath = "",
-  String titre = "",
-  String soustitre = "",
-  int index = 0,
-  String btnTitre = "",
-}) {
+Widget Apponbroadpage(PageController controller, BuildContext ctx,
+    {String imagepath = "",
+    String titre = "",
+    String soustitre = "",
+    int index = 0,
+    String btnTitre = "",
+    String SKp = ""}) {
   return Column(
     children: [
       SizedBox(
@@ -35,7 +33,12 @@ Widget Apponbroadpage(
         height: 140,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: text18(name: soustitre, color: Colors.black54),
+          child: text18(
+            name: soustitre,
+            color: Colors.black54,
+            text: TextAlign.center,
+            
+          ),
         ),
       ),
       SizedBox(
@@ -52,7 +55,7 @@ Widget Apponbroadpage(
               },
               // fhadi hya btton skip li radi dik nichan l login
               child: text24(
-                name: 'Skip',
+                name: SKp,
                 color: Colors.black54,
               ),
             )
@@ -90,7 +93,7 @@ Widget _button(
         boxShadow: const [
           BoxShadow(
             spreadRadius: 1,
-            offset: Offset(2, 2),
+            offset: Offset(2, 1),
             color: Colors.black12,
             blurRadius: 2,
           ),
@@ -110,7 +113,7 @@ Widget _button(
 }
 
 // heezz shawod o mse7ha
-Widget button({String name = "", double sizetext = 24,Function()? func}) {
+Widget button({String name = "", double sizetext = 24, Function()? func}) {
   return GestureDetector(
     onTap: () => func,
     child: Container(
@@ -140,5 +143,3 @@ Widget button({String name = "", double sizetext = 24,Function()? func}) {
     ),
   );
 }
-
-

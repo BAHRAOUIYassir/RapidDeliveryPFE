@@ -3,13 +3,13 @@ import 'dart:developer';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_detail_commande.dart';
 import 'package:rapid_delivery_app/widget/primary_button.dart';
 
 import '../../widget/Text_widget.dart';
 
-// ignore: must_be_immutable
-class ForgetPassword extends StatelessWidget {
-  ForgetPassword({super.key});
+class Suive_Commande extends StatelessWidget {
+  Suive_Commande({super.key});
 
   void _handleButtonSendingVerificationCode(BuildContext context) {
     //*********************Implement Button logic here******************
@@ -47,9 +47,7 @@ class ForgetPassword extends StatelessWidget {
               pinned: true,
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(20),
-
                 child: Container(
-                  
                   height: 20,
                   decoration: const BoxDecoration(
                     color: Colors.white,
@@ -77,21 +75,7 @@ class ForgetPassword extends StatelessWidget {
                       child: Column(
                         children: [
                           text36(
-                              name: 'Mode passe oublie', color: Colors.white),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          text18(
-                              name: 'Nous avons envoyé un code à votre email',
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          text18(
-                              name: 'example@gmail.com',
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold)
+                              name: 'Suivre ma commande', color: Colors.white),
                         ],
                       ),
                     )
@@ -109,8 +93,8 @@ class ForgetPassword extends StatelessWidget {
                     //*********************************************Email Filed*********************************************
                     TextFormField(
                       decoration: const InputDecoration(
-                        hintText: 'ENTRER VOTRE EMAIL',
-                        labelText: 'EMAIL',
+                        hintText: 'Enter tracking number',
+                        labelText: 'Tracking',
                         labelStyle: TextStyle(color: Colors.black),
                         filled: true,
                         fillColor: Color.fromARGB(255, 238, 243, 253),
@@ -148,10 +132,15 @@ class ForgetPassword extends StatelessWidget {
                       height: 15,
                     ),
                     PrimaryButton(
-                      textbutton: 'envoyer le code',
+                      textbutton: 'Suivi ma commande',
                       textfontsize: 20,
                       onPressed: () {
                         _handleButtonSendingVerificationCode(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Detailcommande()),
+                        );
                       },
                       style: GoogleFonts.aBeeZee(
                         textStyle: const TextStyle(
