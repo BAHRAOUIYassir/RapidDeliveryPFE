@@ -20,27 +20,27 @@ class Detailcommande extends StatelessWidget {
               color: Colors.white,
               itemBuilder: (context) => [
                 const PopupMenuItem(
-                  value: '1',
+                  value: 'Support',
                   child: Row(
                     children: [
                       Icon(
                         Icons.support_agent,
                         color: Color(0xffFF9800),
-                      ), // Ajout de l'icône de support
-                      SizedBox(width: 8), // Espacement
+                      ),
+                      SizedBox(width: 8),
                       Text('Support'),
                     ],
                   ),
                 ),
                 const PopupMenuItem(
-                  value: '1',
+                  value: 'History',
                   child: Row(
                     children: [
                       Icon(
                         Icons.history,
                         color: Color(0xffFF9800),
-                      ), // Ajout de l'icône de support
-                      SizedBox(width: 8), // Espacement
+                      ),
+                      SizedBox(width: 8),
                       Text('History'),
                     ],
                   ),
@@ -49,78 +49,99 @@ class Detailcommande extends StatelessWidget {
             ),
           ],
         ),
-        body: CustomScrollView(
-          slivers: [
-            const SliverAppBar(
-              pinned: true,
-              automaticallyImplyLeading: false,
-              toolbarHeight: 10,
-              expandedHeight: 500,
-              flexibleSpace: FlexibleSpaceBar(
-                background: Image(
-                  image: AssetImage('image/Maps_carte.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            SliverToBoxAdapter(
-                child: Column(
-              children: [
-                const SizedBox(
-                    height: 30,
-                    width: 60,
-                    child: Divider(
-                      color: Colors.black26,
-                      thickness: 3,
-                    )),
-                Card(
-                  color: Colors.white,
-                  child: ListTile(
-                    minLeadingWidth: 60,
-                    leading: const CircleAvatar(
-                      backgroundImage: AssetImage('image/Livreur.jpg'),
+        body: Stack(
+          children: [
+            Expanded(child: Image.asset('image/Maps_carte.png')),
+            DraggableScrollableSheet(
+              builder: (BuildContext context, scrollController) {
+                return Container(
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).canvasColor,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(25),
+                      topRight: Radius.circular(25),
                     ),
-                    title: text24(name: "salim laghrib", color: Colors.black),
-                    subtitle:
-                        text18(name: "Rapid Delivery", color: Colors.black26),
-                    trailing: const Icon(Icons.phone),
                   ),
-                ),
-                const SizedBox(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Column(
-                      children: [
-                        MyTimeLineTile(
-                          isFirst: true,
-                          isPast: true,
-                          isLast: false,
-                          NameStatus: 'Preparing for shipping',
-                          Date_staus: '13/07/2023',
-                          path: 'image/en-cours.png',
+                  child: Container(
+                    color: Colors.white,
+                    child: CustomScrollView(
+                      controller: scrollController,
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: Center(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).hintColor,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(10)),
+                              ),
+                              height: 4,
+                              width: 40,
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                            ),
+                          ),
                         ),
-                        MyTimeLineTile(
-                          isFirst: false,
-                          isPast: true,
-                          isLast: false,
-                          NameStatus: 'In the process of delivery',
-                          Date_staus: '14/07/2023',
-                          path: 'image/livreur.png',
-                        ),
-                        MyTimeLineTile(
-                          isFirst: false,
-                          isPast: true,
-                          isLast: true,
-                          NameStatus: 'Delivered',
-                          Date_staus: '15/07/2023',
-                          path: 'image/delivery.png',
-                        ),
+                        SliverToBoxAdapter(
+                            child: Column(
+                          children: [
+                            Card(
+                              color: Colors.white,
+                              child: ListTile(
+                                minLeadingWidth: 60,
+                                leading: const CircleAvatar(
+                                  backgroundImage:
+                                      AssetImage('image/Livreur.jpg'),
+                                ),
+                                title: text24(
+                                    name: "salim laghrib", color: Colors.black),
+                                subtitle: text18(
+                                    name: "Rapid Delivery",
+                                    color: Colors.black26),
+                                trailing: const Icon(Icons.phone),
+                              ),
+                            ),
+                            const SizedBox(
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Column(
+                                  children: [
+                                    MyTimeLineTile(
+                                      isFirst: true,
+                                      isPast: true,
+                                      isLast: false,
+                                      NameStatus: 'Preparing for shipping',
+                                      Date_staus: '13/07/2023',
+                                      path: 'image/en-cours.png',
+                                    ),
+                                    MyTimeLineTile(
+                                      isFirst: false,
+                                      isPast: true,
+                                      isLast: false,
+                                      NameStatus: 'In the process of delivery',
+                                      Date_staus: '14/07/2023',
+                                      path: 'image/livreur.png',
+                                    ),
+                                    MyTimeLineTile(
+                                      isFirst: false,
+                                      isPast: true,
+                                      isLast: true,
+                                      NameStatus: 'Delivered',
+                                      Date_staus: '15/07/2023',
+                                      path: 'image/delivery.png',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ))
                       ],
                     ),
                   ),
-                )
-              ],
-            ))
+                );
+              },
+            ),
           ],
         ),
       ),
