@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_detail_commande.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_number_commande.dart';
 import 'package:rapid_delivery_app/Screen/select_spaces_screen.dart';
 import 'package:rapid_delivery_app/firebase_options.dart';
 import 'Animation/animation_intro_logo.dart';
@@ -21,9 +23,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner:
           false, // hadi bax kthyd dik debug li ktkon fjnb lfo9
       home: const SafeArea(
-          child:
-              // YASSIR : Hadi hiya logo animation meli ttsali ttdik l welcome screen
-              SplashScreen('RapidDelivery', Color(0xFFFF9800))),
+        child:
+            // YASSIR : Hadi hiya logo animation meli ttsali ttdik l welcome screen
+            //     SplashScreen(
+            //   'RapidDelivery',
+            //   Color(0xFFFF9800),
+            // ),
+            SelectSpace(),
+      ),
       theme: ThemeData(
           fontFamily: 'fonts/inter-Regular.ttf',
           scaffoldBackgroundColor: Colors.white),

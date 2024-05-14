@@ -1,17 +1,26 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_livreur/forget_password.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/home_screen.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_livreur/signup_screen.dart';
 import 'package:rapid_delivery_app/widget/Text_widget.dart';
 import 'package:rapid_delivery_app/widget/primary_button.dart';
 
 // ignore: must_be_immutable
-class SignInScreen extends StatelessWidget {
-  SignInScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   void _handleButtonForgetPassword(BuildContext context) {
     //*********************Implement Button logic here******************
     Navigator.push(
@@ -24,11 +33,11 @@ class SignInScreen extends StatelessWidget {
     //*********************Implement Button logic here******************
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => const SignUpScreen()),
     );
   }
 
-  void _handleButtonSignIn(BuildContext context) {
+  void _handleButtonLogin(BuildContext context) {
     //*********************Implement Button logic here******************
     // Navigator.push(
     //   context,
@@ -38,15 +47,36 @@ class SignInScreen extends StatelessWidget {
   }
 
   var _entredEmail = '';
+
   var _entredPassword = '';
 
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
-  void _submit() {
+
+  void _submit() async {
     final valide = _fromKey.currentState!.validate();
     if (valide) {
       _fromKey.currentState!.save();
       log(_entredEmail);
       log(_entredPassword);
+
+      try {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: _entredEmail,
+          password: _entredPassword,
+        );
+        //*********************Implement Button logic here******************
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+        );
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context).clearSnackBars();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message ?? 'Authentication failed.'),
+          ),
+        );
+      }
     }
   }
 
@@ -267,7 +297,7 @@ class SignInScreen extends StatelessWidget {
                         textbutton: 'se connecter',
                         textfontsize: 20,
                         onPressed: () {
-                          _handleButtonSignIn(context);
+                          _handleButtonLogin(context);
                         },
                         style: GoogleFonts.aBeeZee(
                           textStyle: const TextStyle(
