@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_livreur/login_screen.dart';
 import 'package:rapid_delivery_app/widget/primary_button.dart';
 
-
 import '../../widget/Text_widget.dart';
 
 class Validation extends StatelessWidget {
@@ -13,7 +12,7 @@ class Validation extends StatelessWidget {
     //*********************Implement Button logic here******************
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignInScreen()),
+      MaterialPageRoute(builder: (context) => LoginScreen()),
     );
   }
 

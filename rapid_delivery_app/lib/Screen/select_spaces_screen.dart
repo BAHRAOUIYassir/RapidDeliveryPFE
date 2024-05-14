@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/home_screen.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/splash_screen.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_number_commande.dart';
 
 import '../widget/primary_button.dart';
@@ -15,7 +18,20 @@ class SelectSpace extends StatelessWidget {
     //*********************Implement Button logic here******************
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SignInScreen()),
+      MaterialPageRoute(
+        builder: (context) => StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const SpashScreen();
+            }
+            if (snapshot.hasData) {
+              return const HomeScreen();
+            }
+            return const LoginScreen();
+          }),
+        ),
+      ),
     );
   }
 
