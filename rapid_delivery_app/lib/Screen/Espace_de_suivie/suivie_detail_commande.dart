@@ -1,9 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:rapid_delivery_app/widget/Detail_commande_widget/timel_line_widget.dart';
-import 'package:rapid_delivery_app/widget/text_widget.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class Detailcommande extends StatelessWidget {
+import '../../widget/Detail_commande_widget/timel_line_widget.dart';
+
+class Detailcommande extends StatefulWidget {
   const Detailcommande({super.key});
+
+  @override
+  State<Detailcommande> createState() => _DetailcommandeState();
+}
+
+class _DetailcommandeState extends State<Detailcommande> {
+  GoogleMapController? mapController;
+
+  final LatLng _center = const LatLng(45.521563, -122.677433);
+
+  void _onMapCreated(GoogleMapController controller) {
+    setState(() {
+      mapController = controller;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +29,8 @@ class Detailcommande extends StatelessWidget {
         appBar: AppBar(
           centerTitle: true,
           foregroundColor: Colors.white,
-          title: text24(name: "Detail Commande", color: Colors.white),
+          title: const Text('Detail Commande',
+              style: TextStyle(fontSize: 24, color: Colors.white)),
           backgroundColor: const Color(0xFFFF9800),
           actions: [
             PopupMenuButton(
@@ -23,10 +41,7 @@ class Detailcommande extends StatelessWidget {
                   value: 'Support',
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.support_agent,
-                        color: Color(0xffFF9800),
-                      ),
+                      Icon(Icons.support_agent, color: Color(0xffFF9800)),
                       SizedBox(width: 8),
                       Text('Support'),
                     ],
@@ -36,54 +51,61 @@ class Detailcommande extends StatelessWidget {
                   value: 'History',
                   child: Row(
                     children: [
-                      Icon(
-                        Icons.history,
-                        color: Color(0xffFF9800),
-                      ),
+                      Icon(Icons.history, color: Color(0xffFF9800)),
                       SizedBox(width: 8),
                       Text('History'),
                     ],
                   ),
-                )
+                ),
               ],
             ),
           ],
         ),
         body: Stack(
           children: [
-            Expanded(child: Image.asset('image/Maps_carte.png')),
+            GoogleMap(
+              onMapCreated: _onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: _center,
+                zoom: 11.0,
+              ),
+              myLocationEnabled: true,
+              myLocationButtonEnabled: true,
+            ),
             DraggableScrollableSheet(
-              builder: (BuildContext context, scrollController) {
+              initialChildSize: 0.15,
+              minChildSize: 0.15,
+              maxChildSize: 0.55,
+              builder:
+                  (BuildContext context, ScrollController scrollController) {
                 return Container(
                   clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).canvasColor,
-                    borderRadius: const BorderRadius.only(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(25),
                       topRight: Radius.circular(25),
                     ),
                   ),
-                  child: Container(
-                    color: Colors.white,
-                    child: CustomScrollView(
-                      controller: scrollController,
-                      slivers: [
-                        SliverToBoxAdapter(
-                          child: Center(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).hintColor,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                              ),
-                              height: 4,
-                              width: 40,
-                              margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: CustomScrollView(
+                    controller: scrollController,
+                    slivers: [
+                      SliverToBoxAdapter(
+                        child: Center(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).hintColor,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
                             ),
+                            height: 4,
+                            width: 40,
+                            margin: const EdgeInsets.symmetric(vertical: 10),
                           ),
                         ),
-                        SliverToBoxAdapter(
-                            child: Column(
+                      ),
+                      SliverToBoxAdapter(
+                        child: Column(
                           children: [
                             Card(
                               color: Colors.white,
@@ -93,12 +115,34 @@ class Detailcommande extends StatelessWidget {
                                   backgroundImage:
                                       AssetImage('image/Livreur.jpg'),
                                 ),
-                                title: text24(
-                                    name: "salim laghrib", color: Colors.black),
-                                subtitle: text18(
-                                    name: "Rapid Delivery",
-                                    color: Colors.black26),
-                                trailing: const Icon(Icons.phone),
+                                title: const Text('salim laghrib',
+                                    style: TextStyle(
+                                        fontSize: 24, color: Colors.black)),
+                                subtitle: const Text('Rapid Delivery',
+                                    style: TextStyle(
+                                        fontSize: 18, color: Colors.black26)),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        // Logique pour appeler
+                                      },
+                                      icon: const Icon(Icons.phone),
+                                      color: Colors.green,
+                                      iconSize: 40,
+                                    ),
+                                    IconButton(
+                                      onPressed: () {
+                                        // Logique pour WhatsApp
+                                      },
+                                      icon: const FaIcon(
+                                          FontAwesomeIcons.whatsapp),
+                                      color: Colors.green,
+                                      iconSize: 40,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                             const SizedBox(
@@ -133,11 +177,11 @@ class Detailcommande extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                            )
+                            ),
                           ],
-                        ))
-                      ],
-                    ),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               },

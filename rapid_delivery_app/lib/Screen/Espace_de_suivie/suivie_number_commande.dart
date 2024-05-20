@@ -13,21 +13,21 @@ class Suive_Commande extends StatelessWidget {
 
   void _handleButtonSendingVerificationCode(BuildContext context) {
     //*********************Implement Button logic here******************
-    _submit(context);
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => const ForgetPassword()),
+    // );
+    _submit();
   }
 
   var _entredForgetPasswordEmail = '';
 
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
-  void _submit(BuildContext context) {
+  void _submit() {
     final valide = _fromKey.currentState!.validate();
     if (valide) {
       _fromKey.currentState!.save();
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Detailcommande()),
-      );
-      // log(_entredForgetPasswordEmail);
+      log(_entredForgetPasswordEmail);
     }
   }
 
@@ -35,7 +35,8 @@ class Suive_Commande extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: CustomScrollView(
+        body:
+         CustomScrollView(
           slivers: [
             SliverAppBar(
               toolbarHeight: 40,
@@ -117,11 +118,16 @@ class Suive_Commande extends StatelessWidget {
                       onSaved: (value) => _entredForgetPasswordEmail = value!,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Veuillez entrer votre numéro de suivie";
+                          return "Veuillez entrer votre adresse e-mail";
+                        }
+                        if (!EmailValidator.validate(value)) {
+                          // Assurez-vous d'importer le package email_validator
+                          return 'Veuillez entrer une adresse e-mail valide';
                         }
                         return null;
                       },
                     ),
+
                     //*************************************************End*************************************************
                     const SizedBox(
                       height: 15,
@@ -131,6 +137,11 @@ class Suive_Commande extends StatelessWidget {
                       textfontsize: 20,
                       onPressed: () {
                         _handleButtonSendingVerificationCode(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Detailcommande()),
+                        );
                       },
                       style: GoogleFonts.aBeeZee(
                         textStyle: const TextStyle(
