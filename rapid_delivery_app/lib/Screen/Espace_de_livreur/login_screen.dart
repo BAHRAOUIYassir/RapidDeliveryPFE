@@ -38,11 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _handleButtonLogin(BuildContext context) {
-    //*********************Implement Button logic here******************
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const SignUpScreen()),
-    // );
     _submit();
   }
 
@@ -64,7 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _entredEmail,
           password: _entredPassword,
         );
-        //*********************Implement Button logic here******************
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -93,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
               // yassir : dir nafs color f les screen lakhrin
               backgroundColor: const Color.fromARGB(255, 46, 46,
                   46), //Yassir:bash tweli backgroud noire chwiya b7al li f desgin
-              expandedHeight: 270.0,
+              expandedHeight: 300,
               pinned: true,
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(20),

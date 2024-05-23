@@ -40,7 +40,7 @@ class SelectSpace extends StatelessWidget {
     // *********************Implement Button logic here******************
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Suive_Commande()),
+      MaterialPageRoute(builder: (context) => SuiveCommande()),
     );
   }
 

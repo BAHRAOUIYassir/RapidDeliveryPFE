@@ -5,8 +5,8 @@ import 'package:rapid_delivery_app/widget/primary_button.dart';
 
 import '../../widget/Text_widget.dart';
 
-class Validation extends StatelessWidget {
-  const Validation({super.key});
+class ResetEmailSuccessfully extends StatelessWidget {
+  const ResetEmailSuccessfully({super.key});
 
   void _handlePrimaryButton(BuildContext context) {
     //*********************Implement Button logic here******************

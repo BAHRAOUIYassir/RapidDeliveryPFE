@@ -19,17 +19,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner:
           false, // hadi bax kthyd dik debug li ktkon fjnb lfo9
       home: const SafeArea(
         child:
             // YASSIR : Hadi hiya logo animation meli ttsali ttdik l welcome screen
-            //     SplashScreen(
-            //   'RapidDelivery',
-            //   Color(0xFFFF9800),
-            // ),
-            SelectSpace(),
+                SplashScreen(
+              'RapidDelivery',
+              Color(0xFFFF9800),
+            ),
+            // SuiveCommande(),
+            
       ),
       theme: ThemeData(
           fontFamily: 'fonts/inter-Regular.ttf',

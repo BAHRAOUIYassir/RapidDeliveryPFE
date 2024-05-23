@@ -82,29 +82,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
     }
   }
+  Future<void> resetUserIdCounter() async {
+  final docRef = FirebaseFirestore.instance.collection('metadata').doc('userId');
+  await docRef.set({'lastId': 0});
+}
 
-  Future addUserDetails(
-      String firstName,
-      String lastName,
-      String birthaydate,
-      String cityName,
-      String vehiculeType,
-      String phoneNumber,
-      String email,
-      DateTime registerDate) async {
-    await FirebaseFirestore.instance.collection('users').add(
-      {
-        'first name': _firstName,
-        'last name': _lastName,
-        'birthday date': _dateController.text,
-        'city': _cityName,
-        'vehicule type': _vehiculeType,
-        'phone number': _phoneNumber,
-        'email': _email,
-        'register date': _registerDate,
-      },
-    );
+  Future<int> getNextUserId() async {
+  final docRef = FirebaseFirestore.instance.collection('metadata').doc('userId');
+  final docSnapshot = await docRef.get();
+
+  if (docSnapshot.exists) {
+    int currentId = docSnapshot.data()?['lastId'] ?? 0;
+    int nextId = currentId + 1;
+
+    await docRef.set({'lastId': nextId});
+    return nextId;
+  } else {
+    // If the document does not exist, initialize it with 1
+    await docRef.set({'lastId': 1});
+    return 1;
   }
+}
+
+Future<void> addUserDetails(
+  String firstName,
+  String lastName,
+  String birthdayDate,
+  String cityName,
+  String vehiculeType,
+  String phoneNumber,
+  String email,
+  DateTime registerDate
+) async {
+  // await resetUserIdCounter();
+
+  int userId = await getNextUserId();
+
+  await FirebaseFirestore.instance.collection('users').doc(userId.toString()).set(
+    {
+      'first name': firstName,
+      'last name': lastName,
+      'birthday date': birthdayDate,
+      'city': cityName,
+      'vehicule type': vehiculeType,
+      'phone number': phoneNumber,
+      'email': email,
+      'register date': registerDate,
+      'deliveryId' : userId,
+    },
+  );
+}
 
   @override
   Widget build(BuildContext context) {

@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:developer';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -5,22 +8,94 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../widget/Detail_commande_widget/timel_line_widget.dart';
 
 class Detailcommande extends StatefulWidget {
-  const Detailcommande({super.key});
+  const Detailcommande({super.key, required this.trackingNumber});
+  final String trackingNumber;
 
   @override
   State<Detailcommande> createState() => _DetailcommandeState();
 }
 
 class _DetailcommandeState extends State<Detailcommande> {
-  GoogleMapController? mapController;
+  var deliveryName = '';
+  var deliveryId = '';
+  var deliveryPhoneNumber = '0';
+  var deliveryPucture = '';
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  final LatLng _center = const LatLng(45.521563, -122.677433);
-
-  void _onMapCreated(GoogleMapController controller) {
-    setState(() {
-      mapController = controller;
-    });
+  @override
+  void initState() {
+    super.initState();
+    // Fetch delivery ID and then fetch student details
+    fetchDeliveryDetails();
   }
+
+  Future<void> fetchDeliveryDetails() async {
+    await getDocumentId();
+    if (deliveryId.isNotEmpty) {
+      await _fetchStudents();
+    }
+  }
+
+  Future<void> getDocumentId() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    try {
+      QuerySnapshot querySnapshot = await db
+          .collection("commandes")
+          .where("tracking number", isEqualTo: widget.trackingNumber)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        setState(() {
+          deliveryId = data['deliveryID'];
+        });
+
+        log("Fetched delivery ID: $deliveryId");
+      } else {
+        log("No document found with the specified tracking number");
+      }
+    } catch (e) {
+      log("Error fetching document ID: $e");
+    }
+  }
+
+  Future<void> _fetchStudents() async {
+    try {
+      // Get the document reference
+      DocumentReference docRef = _firestore.collection('users').doc(deliveryId);
+
+      // Get the document from the reference
+      DocumentSnapshot docSnapshot = await docRef.get();
+
+      // Check if the document exists
+      if (docSnapshot.exists) {
+        var data = docSnapshot.data() as Map<String, dynamic>;
+
+        // Ensure you use the correct fields for first name and phone number
+        setState(() {
+          deliveryName =
+              data['first name'] + ' ' + data['last name'] ?? 'No name';
+          deliveryPhoneNumber = data['phone number'] ?? 'No phone number';
+        });
+
+        log("Fetched delivery name: $deliveryName");
+        log("Fetched delivery phone number: $deliveryPhoneNumber");
+      } else {
+        log("Document with ID $deliveryId does not exist.");
+      }
+    } catch (e) {
+      log("Error fetching student: $e");
+    }
+  }
+
+  static const CameraPosition _initialCameraPosition = CameraPosition(
+    target: LatLng(32.885503336563595, -6.916860354580724),
+    zoom: 13,
+  );
+
+  final Completer<GoogleMapController> _controller = Completer();
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +138,15 @@ class _DetailcommandeState extends State<Detailcommande> {
         ),
         body: Stack(
           children: [
-            GoogleMap(
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(
-                target: _center,
-                zoom: 11.0,
+            SafeArea(
+              child: GoogleMap(
+                initialCameraPosition: _initialCameraPosition,
+                mapType: MapType.terrain,
+                liteModeEnabled: true,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                },
               ),
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
             ),
             DraggableScrollableSheet(
               initialChildSize: 0.15,
@@ -115,9 +191,9 @@ class _DetailcommandeState extends State<Detailcommande> {
                                   backgroundImage:
                                       AssetImage('image/Livreur.jpg'),
                                 ),
-                                title: const Text('salim laghrib',
-                                    style: TextStyle(
-                                        fontSize: 24, color: Colors.black)),
+                                title: Text(deliveryName,
+                                    style: const TextStyle(
+                                        fontSize: 20, color: Colors.black)),
                                 subtitle: const Text('Rapid Delivery',
                                     style: TextStyle(
                                         fontSize: 18, color: Colors.black26)),
@@ -135,6 +211,7 @@ class _DetailcommandeState extends State<Detailcommande> {
                                     IconButton(
                                       onPressed: () {
                                         // Logique pour WhatsApp
+                                        // yassir : use variable deliveryPhoneNumber
                                       },
                                       icon: const FaIcon(
                                           FontAwesomeIcons.whatsapp),

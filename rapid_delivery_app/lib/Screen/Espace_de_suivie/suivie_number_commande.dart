@@ -1,33 +1,85 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_detail_commande.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_empty.dart';
 import 'package:rapid_delivery_app/widget/primary_button.dart';
 
 import '../../widget/Text_widget.dart';
 
-class Suive_Commande extends StatelessWidget {
-  Suive_Commande({super.key});
+class SuiveCommande extends StatefulWidget {
+  const SuiveCommande({super.key});
 
-  void _handleButtonSendingVerificationCode(BuildContext context) {
-    //*********************Implement Button logic here******************
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const ForgetPassword()),
-    // );
-    _submit();
+  @override
+  State<SuiveCommande> createState() => _SuiveCommandeState();
+}
+
+class _SuiveCommandeState extends State<SuiveCommande> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  var _entredTrackingNumber = '';
+  bool trackingNumberExists = false;
+
+  Future<void> _fetchCommandes() async {
+    try {
+      // Get the collection reference
+      CollectionReference commandesCollection =
+          _firestore.collection('commandes');
+
+      // Query the documents where 'tracking number' matches the entered tracking number
+      QuerySnapshot snapshot = await commandesCollection
+          .where('tracking number', isEqualTo: _entredTrackingNumber)
+          .get();
+
+      // Check if any documents were returned
+      bool trackNumExists = snapshot.docs.isNotEmpty;
+
+      // Update the state with the result
+      setState(() {
+        trackingNumberExists = trackNumExists;
+      });
+
+      log("Tracking number exists: $trackingNumberExists");
+    } catch (e) {
+      log("Error checking tracking number: $e");
+    }
   }
 
-  var _entredForgetPasswordEmail = '';
+  void _handleButtonSendingVerificationCode(BuildContext context) {
+    setState(() {
+      _entredTrackingNumber = '';
+      _submit();
+    });
+  }
 
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
-  void _submit() {
+
+  void _submit() async {
     final valide = _fromKey.currentState!.validate();
     if (valide) {
       _fromKey.currentState!.save();
-      log(_entredForgetPasswordEmail);
+       await  _fetchCommandes();
+      log("tracking number: $_entredTrackingNumber");
+
+      if (trackingNumberExists) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Detailcommande(
+              trackingNumber: _entredTrackingNumber,
+            ),
+          ),
+        );
+      } else {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const Notfound(),
+          ),
+        );
+      }
     }
   }
 
@@ -35,8 +87,7 @@ class Suive_Commande extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body:
-         CustomScrollView(
+        body: CustomScrollView(
           slivers: [
             SliverAppBar(
               toolbarHeight: 40,
@@ -115,15 +166,12 @@ class Suive_Commande extends StatelessWidget {
                       keyboardType: TextInputType.emailAddress,
                       autocorrect: false,
                       textCapitalization: TextCapitalization.none,
-                      onSaved: (value) => _entredForgetPasswordEmail = value!,
+                      onSaved: (value) => _entredTrackingNumber = value!,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
-                          return "Veuillez entrer votre adresse e-mail";
+                          return "Veuillez entrer votre numero de suivie";
                         }
-                        if (!EmailValidator.validate(value)) {
-                          // Assurez-vous d'importer le package email_validator
-                          return 'Veuillez entrer une adresse e-mail valide';
-                        }
+
                         return null;
                       },
                     ),
@@ -137,11 +185,6 @@ class Suive_Commande extends StatelessWidget {
                       textfontsize: 20,
                       onPressed: () {
                         _handleButtonSendingVerificationCode(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Detailcommande()),
-                        );
                       },
                       style: GoogleFonts.aBeeZee(
                         textStyle: const TextStyle(

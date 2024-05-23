@@ -1,32 +1,47 @@
 import 'dart:developer';
 
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/validation.dart';
 import 'package:rapid_delivery_app/widget/primary_button.dart';
 
 import '../../widget/Text_widget.dart';
 
 // ignore: must_be_immutable
-class ForgetPassword extends StatelessWidget {
-  ForgetPassword({super.key});
+class ForgetPassword extends StatefulWidget {
+  const ForgetPassword({super.key});
 
+  @override
+  State<ForgetPassword> createState() => _ForgetPasswordState();
+}
+
+class _ForgetPasswordState extends State<ForgetPassword> {
   void _handleButtonSendingVerificationCode(BuildContext context) {
-    //*********************Implement Button logic here******************
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => const ForgetPassword()),
-    // );
     _submit();
   }
 
   var _entredForgetPasswordEmail = '';
 
   final GlobalKey<FormState> _fromKey = GlobalKey<FormState>();
-  void _submit() {
+
+  void _submit() async {
     final valide = _fromKey.currentState!.validate();
     if (valide) {
       _fromKey.currentState!.save();
+      try {
+        await FirebaseAuth.instance
+            .sendPasswordResetEmail(email: _entredForgetPasswordEmail);
+        // Handle successful password reset
+      } catch (e) {
+        // Handle password reset error
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ResetEmailSuccessfully()),
+      );
+
       log(_entredForgetPasswordEmail);
     }
   }
@@ -47,9 +62,7 @@ class ForgetPassword extends StatelessWidget {
               pinned: true,
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(20),
-
                 child: Container(
-                  
                   height: 20,
                   decoration: const BoxDecoration(
                     color: Colors.white,
