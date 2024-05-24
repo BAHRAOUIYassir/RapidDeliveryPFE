@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../widget/Detail_commande_widget/timel_line_widget.dart';
 
@@ -18,8 +20,9 @@ class Detailcommande extends StatefulWidget {
 class _DetailcommandeState extends State<Detailcommande> {
   var deliveryName = '';
   var deliveryId = '';
-  var deliveryPhoneNumber = '0';
+  var deliveryPhoneNumber = '0688784609';
   var deliveryPucture = '';
+  var status = '';
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
@@ -27,6 +30,33 @@ class _DetailcommandeState extends State<Detailcommande> {
     super.initState();
     // Fetch delivery ID and then fetch student details
     fetchDeliveryDetails();
+  }
+
+  //for make call phone
+  void _makeCall(String number) async {
+    if (number.isNotEmpty) {
+      final Uri launchUri = Uri(scheme: 'tel', path: number);
+      if (!await launchUrl(launchUri)) {
+        log("Could not launch Phone number");
+      }
+    } else {
+      log("Phone number is empty");
+    }
+  }
+
+  //for send message wathssap
+  void _launchWhatsApp(String phone) async {
+    final Uri launchUri = Uri(
+      scheme: 'https',
+      host: 'wa.me',
+      path: phone,
+    );
+
+    if (await canLaunch(launchUri.toString())) {
+      await launch(launchUri.toString());
+    } else {
+      log("Could not launch WhatsApp");
+    }
   }
 
   Future<void> fetchDeliveryDetails() async {
@@ -50,9 +80,12 @@ class _DetailcommandeState extends State<Detailcommande> {
             documentSnapshot.data() as Map<String, dynamic>;
         setState(() {
           deliveryId = data['deliveryID'];
+          status = data['commande status'];
+          isDelivered();
         });
 
         log("Fetched delivery ID: $deliveryId");
+        log("Fetched status: $status");
       } else {
         log("No document found with the specified tracking number");
       }
@@ -90,6 +123,25 @@ class _DetailcommandeState extends State<Detailcommande> {
     }
   }
 
+  bool confirmed = false;
+  bool inProgress = false;
+  bool delivred = false;
+
+  void isDelivered() {
+    if (status == 'confirmed') {
+      confirmed = true;
+    }
+    if (status == 'in_progress') {
+      confirmed = true;
+      inProgress = true;
+    }
+    if (status == 'delivered') {
+      confirmed = true;
+      inProgress = true;
+      delivred = true;
+    }
+  }
+
   static const CameraPosition _initialCameraPosition = CameraPosition(
     target: LatLng(32.885503336563595, -6.916860354580724),
     zoom: 13,
@@ -103,20 +155,18 @@ class _DetailcommandeState extends State<Detailcommande> {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          foregroundColor: Colors.white,
-          title: const Text('Detail Commande',
-              style: TextStyle(fontSize: 24, color: Colors.white)),
-          backgroundColor: const Color(0xFFFF9800),
+          title: const Text(
+            'Detail Commande',
+            style: TextStyle(fontSize: 24),
+          ),
           actions: [
             PopupMenuButton(
-              iconSize: 30,
-              color: Colors.white,
               itemBuilder: (context) => [
                 const PopupMenuItem(
                   value: 'Support',
                   child: Row(
                     children: [
-                      Icon(Icons.support_agent, color: Color(0xffFF9800)),
+                      Icon(Icons.support_agent),
                       SizedBox(width: 8),
                       Text('Support'),
                     ],
@@ -126,7 +176,7 @@ class _DetailcommandeState extends State<Detailcommande> {
                   value: 'History',
                   child: Row(
                     children: [
-                      Icon(Icons.history, color: Color(0xffFF9800)),
+                      Icon(Icons.history),
                       SizedBox(width: 8),
                       Text('History'),
                     ],
@@ -138,15 +188,13 @@ class _DetailcommandeState extends State<Detailcommande> {
         ),
         body: Stack(
           children: [
-            SafeArea(
-              child: GoogleMap(
-                initialCameraPosition: _initialCameraPosition,
-                mapType: MapType.terrain,
-                liteModeEnabled: true,
-                onMapCreated: (GoogleMapController controller) {
-                  _controller.complete(controller);
-                },
-              ),
+            GoogleMap(
+              initialCameraPosition: _initialCameraPosition,
+              mapType: MapType.terrain,
+              liteModeEnabled: true,
+              onMapCreated: (GoogleMapController controller) {
+                _controller.complete(controller);
+              },
             ),
             DraggableScrollableSheet(
               initialChildSize: 0.15,
@@ -192,27 +240,22 @@ class _DetailcommandeState extends State<Detailcommande> {
                                       AssetImage('image/Livreur.jpg'),
                                 ),
                                 title: Text(deliveryName,
-                                    style: const TextStyle(
-                                        fontSize: 20, color: Colors.black)),
+                                    style: const TextStyle(fontSize: 20)),
                                 subtitle: const Text('Rapid Delivery',
-                                    style: TextStyle(
-                                        fontSize: 18, color: Colors.black26)),
+                                    style: TextStyle(fontSize: 18)),
                                 trailing: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     IconButton(
-                                      onPressed: () {
-                                        // Logique pour appeler
-                                      },
+                                      onPressed: () =>
+                                          _makeCall(deliveryPhoneNumber),
                                       icon: const Icon(Icons.phone),
                                       color: Colors.green,
                                       iconSize: 40,
                                     ),
                                     IconButton(
-                                      onPressed: () {
-                                        // Logique pour WhatsApp
-                                        // yassir : use variable deliveryPhoneNumber
-                                      },
+                                      onPressed: () =>
+                                          _launchWhatsApp(deliveryPhoneNumber),
                                       icon: const FaIcon(
                                           FontAwesomeIcons.whatsapp),
                                       color: Colors.green,
@@ -222,14 +265,14 @@ class _DetailcommandeState extends State<Detailcommande> {
                                 ),
                               ),
                             ),
-                            const SizedBox(
+                            SizedBox(
                               child: Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 20),
                                 child: Column(
                                   children: [
                                     MyTimeLineTile(
                                       isFirst: true,
-                                      isPast: true,
+                                      isPast: confirmed,
                                       isLast: false,
                                       NameStatus: 'Preparing for shipping',
                                       Date_staus: '13/07/2023',
@@ -237,7 +280,7 @@ class _DetailcommandeState extends State<Detailcommande> {
                                     ),
                                     MyTimeLineTile(
                                       isFirst: false,
-                                      isPast: true,
+                                      isPast: inProgress,
                                       isLast: false,
                                       NameStatus: 'In the process of delivery',
                                       Date_staus: '14/07/2023',
@@ -245,7 +288,7 @@ class _DetailcommandeState extends State<Detailcommande> {
                                     ),
                                     MyTimeLineTile(
                                       isFirst: false,
-                                      isPast: true,
+                                      isPast: delivred,
                                       isLast: true,
                                       NameStatus: 'Delivered',
                                       Date_staus: '15/07/2023',

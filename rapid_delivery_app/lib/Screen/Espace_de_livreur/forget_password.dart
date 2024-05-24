@@ -58,7 +58,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
               foregroundColor: Colors.white,
               backgroundColor: const Color.fromARGB(255, 88, 88,
                   88), //Yassir:bash tweli backgroud noire chwiya b7al li f desgin
-              expandedHeight: 270.0,
+              expandedHeight: 300.0,
               pinned: true,
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(20),

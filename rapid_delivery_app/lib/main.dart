@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: 'fonts/inter-Regular.ttf',
           scaffoldBackgroundColor: Colors.white),
+          
       //hada theme data kdar fiha xi haja li atkon f ga3 les page bhal back ground bhla font
       routes: {
         'loginpage': (context) => const SelectSpace(),

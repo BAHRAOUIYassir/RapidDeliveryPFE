@@ -36,7 +36,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _dateController = TextEditingController();
 
   final _value = '-1';
-  
 
   final DateTime _registerDate = DateTime.now();
 
@@ -82,56 +81,61 @@ class _SignUpScreenState extends State<SignUpScreen> {
       );
     }
   }
+
   Future<void> resetUserIdCounter() async {
-  final docRef = FirebaseFirestore.instance.collection('metadata').doc('userId');
-  await docRef.set({'lastId': 0});
-}
+    final docRef =
+        FirebaseFirestore.instance.collection('metadata').doc('userId');
+    await docRef.set({'lastId': 0});
+  }
 
   Future<int> getNextUserId() async {
-  final docRef = FirebaseFirestore.instance.collection('metadata').doc('userId');
-  final docSnapshot = await docRef.get();
+    final docRef =
+        FirebaseFirestore.instance.collection('metadata').doc('userId');
+    final docSnapshot = await docRef.get();
 
-  if (docSnapshot.exists) {
-    int currentId = docSnapshot.data()?['lastId'] ?? 0;
-    int nextId = currentId + 1;
+    if (docSnapshot.exists) {
+      int currentId = docSnapshot.data()?['lastId'] ?? 0;
+      int nextId = currentId + 1;
 
-    await docRef.set({'lastId': nextId});
-    return nextId;
-  } else {
-    // If the document does not exist, initialize it with 1
-    await docRef.set({'lastId': 1});
-    return 1;
+      await docRef.set({'lastId': nextId});
+      return nextId;
+    } else {
+      // If the document does not exist, initialize it with 1
+      await docRef.set({'lastId': 1});
+      return 1;
+    }
   }
-}
 
-Future<void> addUserDetails(
-  String firstName,
-  String lastName,
-  String birthdayDate,
-  String cityName,
-  String vehiculeType,
-  String phoneNumber,
-  String email,
-  DateTime registerDate
-) async {
-  // await resetUserIdCounter();
+  Future<void> addUserDetails(
+      String firstName,
+      String lastName,
+      String birthdayDate,
+      String cityName,
+      String vehiculeType,
+      String phoneNumber,
+      String email,
+      DateTime registerDate) async {
+    // await resetUserIdCounter();
 
-  int userId = await getNextUserId();
+    int userId = await getNextUserId();
 
-  await FirebaseFirestore.instance.collection('users').doc(userId.toString()).set(
-    {
-      'first name': firstName,
-      'last name': lastName,
-      'birthday date': birthdayDate,
-      'city': cityName,
-      'vehicule type': vehiculeType,
-      'phone number': phoneNumber,
-      'email': email,
-      'register date': registerDate,
-      'deliveryId' : userId,
-    },
-  );
-}
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId.toString())
+        .set(
+      {
+        'first name': firstName,
+        'last name': lastName,
+        'birthday date': birthdayDate,
+        'city': cityName,
+        'vehicule type': vehiculeType,
+        'phone number': phoneNumber,
+        'email': email,
+        'register date': registerDate,
+        'deliveryId': userId,
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +149,7 @@ Future<void> addUserDetails(
               foregroundColor: Colors.white,
               backgroundColor: const Color.fromARGB(255, 88, 88,
                   88), //Yassir:bash tweli backgroud noire chwiya b7al li f desgin
-              expandedHeight: 270.0,
+              expandedHeight: 300.0,
               pinned: true,
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(20),

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_detail_commande.dart';
@@ -60,7 +59,7 @@ class _SuiveCommandeState extends State<SuiveCommande> {
     final valide = _fromKey.currentState!.validate();
     if (valide) {
       _fromKey.currentState!.save();
-       await  _fetchCommandes();
+      await _fetchCommandes();
       log("tracking number: $_entredTrackingNumber");
 
       if (trackingNumberExists) {
@@ -95,7 +94,7 @@ class _SuiveCommandeState extends State<SuiveCommande> {
               foregroundColor: Colors.white,
               backgroundColor: const Color.fromARGB(255, 88, 88,
                   88), //Yassir:bash tweli backgroud noire chwiya b7al li f desgin
-              expandedHeight: 270.0,
+              expandedHeight: 300.0,
               pinned: true,
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(20),
