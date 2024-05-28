@@ -20,7 +20,7 @@ class Detailcommande extends StatefulWidget {
 class _DetailcommandeState extends State<Detailcommande> {
   var deliveryName = '';
   var deliveryId = '';
-  var deliveryPhoneNumber = '0688784609';
+  var deliveryPhoneNumber = '';
   var deliveryPucture = '';
   var status = '';
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -62,7 +62,7 @@ class _DetailcommandeState extends State<Detailcommande> {
   Future<void> fetchDeliveryDetails() async {
     await getDocumentId();
     if (deliveryId.isNotEmpty) {
-      await _fetchStudents();
+      await _fetchDeliveres();
     }
   }
 
@@ -94,7 +94,7 @@ class _DetailcommandeState extends State<Detailcommande> {
     }
   }
 
-  Future<void> _fetchStudents() async {
+  Future<void> _fetchDeliveres() async {
     try {
       // Get the document reference
       DocumentReference docRef = _firestore.collection('users').doc(deliveryId);

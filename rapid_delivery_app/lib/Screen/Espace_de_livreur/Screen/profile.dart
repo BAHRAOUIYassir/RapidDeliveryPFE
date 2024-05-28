@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -9,12 +12,49 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  var deliveryName = '';
+  var deliveryId = '';
+
+  final user = FirebaseAuth.instance.currentUser;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> getDeliveryData() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    try {
+      QuerySnapshot querySnapshot = await db
+          .collection("users")
+          .where("email", isEqualTo: user?.email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        setState(() {
+          deliveryName = data['first name'] + ' ' + data['last name'];
+        });
+
+        log("Fetched delivery ID: $deliveryId");
+      } else {
+        log("No document found with the specified tracking number");
+      }
+    } catch (e) {
+      log("Error fetching document ID: $e");
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getDeliveryData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -34,7 +74,7 @@ class _ProfileState extends State<Profile> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            user?.email ?? 'No email',
+                            deliveryName,
                             style: const TextStyle(fontSize: 26),
                           ),
                           const SizedBox(
@@ -115,6 +155,6 @@ class _ProfileState extends State<Profile> {
 
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.pushReplacementNamed(context, '/');
+    Navigator.pushReplacementNamed(context, 'loginpage');
   }
 }

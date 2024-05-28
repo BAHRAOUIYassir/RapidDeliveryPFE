@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/profile.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_detail_commande.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_number_commande.dart';
 import 'package:rapid_delivery_app/Screen/select_spaces_screen.dart';
@@ -19,23 +20,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner:
           false, // hadi bax kthyd dik debug li ktkon fjnb lfo9
       home: const SafeArea(
-        child:
-            // YASSIR : Hadi hiya logo animation meli ttsali ttdik l welcome screen
-                SplashScreen(
-              'RapidDelivery',
-              Color(0xFFFF9800),
-            ),
-            // SuiveCommande(),
-            
+        child: SplashScreen(
+          'RapidDelivery',
+          Color(0xFFFF9800),
+        ),
+        // YASSIR : Hadi hiya logo animation meli ttsali ttdik l welcome screen
+
+        // SuiveCommande(),Profile(), ,
       ),
       theme: ThemeData(
           fontFamily: 'fonts/inter-Regular.ttf',
           scaffoldBackgroundColor: Colors.white),
-          
+
       //hada theme data kdar fiha xi haja li atkon f ga3 les page bhal back ground bhla font
       routes: {
         'loginpage': (context) => const SelectSpace(),

@@ -59,10 +59,13 @@ class _LoginScreenState extends State<LoginScreen> {
           email: _entredEmail,
           password: _entredPassword,
         );
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-        );
+        if (mounted) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+          );
+          // Perform operations that depend on the context
+        }
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context).clearSnackBars();
         ScaffoldMessenger.of(context).showSnackBar(
