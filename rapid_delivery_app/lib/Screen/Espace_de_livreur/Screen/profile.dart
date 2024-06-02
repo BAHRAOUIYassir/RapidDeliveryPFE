@@ -45,7 +45,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    
     getDeliveryData();
     super.initState();
   }
@@ -54,7 +54,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(10.0),
+        padding:const  EdgeInsets.all(10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -135,7 +135,24 @@ class _ProfileState extends State<Profile> {
               ),
               padding: const EdgeInsets.all(15),
               child: ListTile(
-                onTap: _signOut,
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      content: const Text("Are you sure"),
+                      alignment: Alignment.center,
+                      actions: [
+                        TextButton(onPressed: _signOut, child: const Text('yes')),
+                        TextButton(
+                          child: const Text('cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
                 leading: const CircleAvatar(
                   backgroundColor: Colors.white,
                   child: Icon(

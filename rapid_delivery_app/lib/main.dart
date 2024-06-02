@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/profile.dart';
-import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_detail_commande.dart';
-import 'package:rapid_delivery_app/Screen/Espace_de_suivie/suivie_number_commande.dart';
+
+
 import 'package:rapid_delivery_app/Screen/select_spaces_screen.dart';
 import 'package:rapid_delivery_app/firebase_options.dart';
 import 'Animation/animation_intro_logo.dart';

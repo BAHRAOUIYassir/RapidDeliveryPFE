@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_livreur/login_screen.dart';
 import 'package:rapid_delivery_app/widget/Text_widget.dart';

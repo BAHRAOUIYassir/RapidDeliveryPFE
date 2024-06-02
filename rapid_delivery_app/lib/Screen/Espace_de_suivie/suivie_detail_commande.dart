@@ -157,7 +157,8 @@ class _DetailcommandeState extends State<Detailcommande> {
           centerTitle: true,
           title: const Text(
             'Detail Commande',
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: 24 ),
+
           ),
           actions: [
             PopupMenuButton(

@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../widget/char_container/chart_container.dart';
+import '../chart/bar_chart.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -215,6 +218,12 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ],
             ),
+            const SizedBox(height: 20),
+              ChartContainer(
+                title: 'Order week',
+                color: const Color(0xff46426c),
+                chart: BarChartContent(),//salim: hna atmxi data/order_data.dart hna fin rdi importer data 
+              ),
           ],
         ),
       ),

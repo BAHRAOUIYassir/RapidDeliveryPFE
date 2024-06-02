@@ -1,7 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/dashboard.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/dashboard/dashboard.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/order/order.dart';
 import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/profile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,6 +17,36 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var deliveryId = '';
+
+  final user = FirebaseAuth.instance.currentUser;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> getDeliveryData() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    try {
+      QuerySnapshot querySnapshot = await db
+          .collection("users")
+          .where("email", isEqualTo: user?.email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        setState(() {
+          deliveryId = data['deliveryId'];
+        });
+
+        log("Fetched delivery ID: $deliveryId" as num);
+      } else {
+        log("No document found with the specified tracking number" as num);
+      }
+    } catch (e) {
+      log("Error fetching document ID: $e" as num);
+    }
+  }
+
   void _selectScreen(int index) {
     setState(() {
       _indexSelected = index;
@@ -24,11 +59,11 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     _screen = [
       {
-        'screen': Dashboard(),
+        'screen': const Dashboard(),
         'title': '',
       },
       {
-        'screen': Container(),
+        'screen': CommandeScreen(deliveryID: deliveryId.toString()),
         'title': 'Offers',
       },
       {
@@ -36,11 +71,12 @@ class _HomeScreenState extends State<HomeScreen> {
         'title': 'Wallet',
       },
       {
-        'screen': Profile(),
+        'screen': const Profile(),
         'title': 'Profile',
       }
     ];
     super.initState();
+    getDeliveryData();//intilati id 
   }
 
   @override
@@ -69,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
           selectedFontSize: 16,
           selectedLabelStyle:
               const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Karla'),
-          unselectedLabelStyle: TextStyle(fontFamily: 'Karla'),
+          unselectedLabelStyle: const TextStyle(fontFamily: 'Karla'),
           currentIndex: _indexSelected,
           items: const [
             BottomNavigationBarItem(
