@@ -9,7 +9,7 @@ class Commande {
   final String customerName;
   final int customerPhoneNumber;
   final String deliveryAddress;
-  final String deliveryID;
+  final int deliveryID;
   final String trackingNumber;
   bool isSelected;
 

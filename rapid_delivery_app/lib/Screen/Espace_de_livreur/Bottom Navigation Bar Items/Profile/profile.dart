@@ -39,7 +39,7 @@ class _ProfileState extends State<Profile> {
         log("No document found with the specified tracking number");
       }
     } catch (e) {
-      log("Error fetching document ID: $e");
+      log("Error fetching document ID in profile screen: $e");
     }
   }
 

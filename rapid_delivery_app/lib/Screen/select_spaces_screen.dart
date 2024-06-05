@@ -23,7 +23,7 @@ class SelectSpace extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: ((context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SpashScreen();
+              return const LoadingSpashScreen();
             }
             if (snapshot.hasData) {
               return const HomeScreen();

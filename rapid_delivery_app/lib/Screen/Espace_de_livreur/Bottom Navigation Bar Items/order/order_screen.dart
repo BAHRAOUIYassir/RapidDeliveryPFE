@@ -1,31 +1,71 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/data/order_data.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Bottom%20Navigation%20Bar%20Items/order/order_data.dart';
 
 import 'target_maps.dart';
 
-class CommandeScreen extends StatefulWidget {
-  final String deliveryID;
-
-  const CommandeScreen({super.key, required this.deliveryID});
+class OrderseScreen extends StatefulWidget {
+  const OrderseScreen({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _CommandeScreenState createState() => _CommandeScreenState();
+  _OrderseScreenState createState() => _OrderseScreenState();
 }
 
-class _CommandeScreenState extends State<CommandeScreen> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+class _OrderseScreenState extends State<OrderseScreen> {
+  String? currentUserEmail;
+  int currentDeliveryId = 0;
   List<Commande> _commandes = []; //list dyal commend min base de donner
   bool _selectAll = false; //selct all commande
   String _distance = "";
 
+//get current user Email to use is to get the DeliveryId*
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  Future<void> _getCurrentUserEmail() async {
+    User? user = _auth.currentUser;
+
+    if (user != null) {
+      setState(() {
+        currentUserEmail = user.email;
+      });
+
+      await _getFieldFromFirestore(user.email!);
+    }
+  }
+
+  // get the fields of the document that have a field email == to user.email
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> _getFieldFromFirestore(String? email) async {
+    try {
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users') // Replace with your collection name
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        var document = querySnapshot.docs.first;
+        setState(() {
+          currentDeliveryId = document[
+              'deliveryId']; // Replace with the field name you want to retrieve
+        });
+      }
+      log("Delivery id " + currentDeliveryId.toString());
+      await _fetchCommandes();
+    } catch (e) {
+      log('Error retrieving document: $e');
+    }
+  }
+
   Future<void> _fetchCommandes() async {
     QuerySnapshot snapshot = await _firestore
         .collection('commandes')
-        .where('deliveryID', isEqualTo: widget.deliveryID)
+        .where('deliveryID', isEqualTo: currentDeliveryId)
         .get();
     setState(() {
       _commandes =
@@ -99,7 +139,7 @@ class _CommandeScreenState extends State<CommandeScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchCommandes();
+    _getCurrentUserEmail();
   }
 
   @override
@@ -167,7 +207,7 @@ class _CommandeScreenState extends State<CommandeScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                       const  Text(
+                        const Text(
                           'No Order Today',
                           style:
                               TextStyle(fontSize: 22, color: Color(0xFFFF9800)),

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class SpashScreen extends StatefulWidget {
-  const SpashScreen({super.key});
+class LoadingSpashScreen extends StatefulWidget {
+  const LoadingSpashScreen({super.key});
 
   @override
-  State<SpashScreen> createState() => _SpashScreenState();
+  State<LoadingSpashScreen> createState() => _LoadingSpashScreenState();
 }
 
-class _SpashScreenState extends State<SpashScreen> {
+class _LoadingSpashScreenState extends State<LoadingSpashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

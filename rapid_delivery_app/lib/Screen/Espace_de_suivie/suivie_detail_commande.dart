@@ -90,7 +90,7 @@ class _DetailcommandeState extends State<Detailcommande> {
         log("No document found with the specified tracking number");
       }
     } catch (e) {
-      log("Error fetching document ID: $e");
+      log("Error fetching document ID command detail screen: $e");
     }
   }
 
@@ -157,8 +157,7 @@ class _DetailcommandeState extends State<Detailcommande> {
           centerTitle: true,
           title: const Text(
             'Detail Commande',
-            style: TextStyle(fontSize: 24 ),
-
+            style: TextStyle(fontSize: 24),
           ),
           actions: [
             PopupMenuButton(

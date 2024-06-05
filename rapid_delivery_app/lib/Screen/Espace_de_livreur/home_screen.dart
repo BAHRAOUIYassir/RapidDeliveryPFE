@@ -1,13 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/dashboard/dashboard.dart';
-import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/order/order.dart';
-import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Screen/profile.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Bottom%20Navigation%20Bar%20Items/dashboard/dashboard.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Bottom%20Navigation%20Bar%20Items/order/order_screen.dart';
+import 'package:rapid_delivery_app/Screen/Espace_de_livreur/Bottom%20Navigation%20Bar%20Items/Profile/profile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,35 +17,35 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var deliveryId = '';
+  var deliveryId = 0;
 
-  final user = FirebaseAuth.instance.currentUser;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  // final user = FirebaseAuth.instance.currentUser;
+  // final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<void> getDeliveryData() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    try {
-      QuerySnapshot querySnapshot = await db
-          .collection("users")
-          .where("email", isEqualTo: user?.email)
-          .get();
+  // Future<void> getDeliveryData() async {
+  //   FirebaseFirestore db = FirebaseFirestore.instance;
+  //   try {
+  //     QuerySnapshot querySnapshot = await db
+  //         .collection("users")
+  //         .where("email", isEqualTo: user?.email)
+  //         .get();
 
-      if (querySnapshot.docs.isNotEmpty) {
-        DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
-        Map<String, dynamic> data =
-            documentSnapshot.data() as Map<String, dynamic>;
-        setState(() {
-          deliveryId = data['deliveryId'];
-        });
+  //     if (querySnapshot.docs.isNotEmpty) {
+  //       DocumentSnapshot documentSnapshot = querySnapshot.docs.first;
+  //       Map<String, dynamic> data =
+  //           documentSnapshot.data() as Map<String, dynamic>;
+  //       setState(() {
+  //         deliveryId = data['deliveryId'];
+  //       });
 
-        log("Fetched delivery ID: $deliveryId" as num);
-      } else {
-        log("No document found with the specified tracking number" as num);
-      }
-    } catch (e) {
-      log("Error fetching document ID: $e" as num);
-    }
-  }
+  //       log("Fetched delivery ID: $deliveryId");
+  //     } else {
+  //       log("No document found with the specified tracking number");
+  //     }
+  //   } catch (e) {
+  //     log("Error fetching document ID in home screen: $e");
+  //   }
+  // }
 
   void _selectScreen(int index) {
     setState(() {
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
         'title': '',
       },
       {
-        'screen': CommandeScreen(deliveryID: deliveryId.toString()),
+        'screen': OrderseScreen(),
         'title': 'Offers',
       },
       {
@@ -76,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     ];
     super.initState();
-    getDeliveryData();//intilati id 
   }
 
   @override
